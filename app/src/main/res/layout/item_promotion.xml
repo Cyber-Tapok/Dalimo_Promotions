@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    
+
     <data>
         <variable
             name="promotion"
@@ -40,8 +40,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:contentDescription="@{promotion.coverUrl}"
-                        android:src="@mipmap/ic_launcher" />
+                        app:url="@{promotion.coverUrl}"
+                        app:errorImage="@{@drawable/noimg_190x160}"
+                        android:src="@drawable/noimg_190x160"
+                        android:contentDescription="@{promotion.coverUrl}"/>
 
                     <TextView
                         android:id="@+id/item_title"
