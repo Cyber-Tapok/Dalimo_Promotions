@@ -49,6 +49,8 @@ class ItemPromotionAdapter :
         notifyItemChanged(position)
     }
 
+    fun isEmpty() = listPromotion.isEmpty()
+
     inner class ItemPromotionViewHolder(private val binding: ItemPromotionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {

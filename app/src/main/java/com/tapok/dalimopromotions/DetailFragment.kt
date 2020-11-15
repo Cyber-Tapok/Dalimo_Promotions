@@ -54,8 +54,8 @@ class DetailFragment : Fragment() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 viewModel.selected.value = null
+//                this.remove()
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@DetailFragment).commit()
-                this.remove()
             }
         }
         activity?.onBackPressedDispatcher?.addCallback(callback)

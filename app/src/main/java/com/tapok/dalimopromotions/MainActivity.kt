@@ -1,16 +1,13 @@
 package com.tapok.dalimopromotions
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tapok.dalimopromotions.databinding.ActivityMainBinding
 import com.tapok.dalimopromotions.di.PromotionApplication
 import com.tapok.dalimopromotions.di.ViewModelFactory
-import com.tapok.dalimopromotions.model.Promotion
-import com.tapok.dalimopromotions.recyclerview.ItemPromotionAdapter
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -27,13 +24,14 @@ class MainActivity : AppCompatActivity() {
         (applicationContext as PromotionApplication).databaseComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PromotionViewModel::class.java)
         var fragmentManager = supportFragmentManager
-        viewModel.selected.observe(this, {promotion ->
+        viewModel.selected.observe(this, { promotion ->
             promotion?.let {
-                mainBinding.detailFragment.let {
+                mainBinding.detailFragment.apply {
+                    isVisible = true
                     fragmentManager.beginTransaction()
                         .replace(mainBinding.detailFragment.id, DetailFragment()).commit()
                 }
-            }
+            } ?: run { mainBinding.detailFragment.isVisible = false }
         })
         fragmentManager.beginTransaction().replace(mainBinding.masterFragment.id, MasterFragment())
             .commit()

@@ -14,7 +14,7 @@ interface PromotionDao {
     }
 
     @Query("SELECT * FROM promotions")
-    fun getData(): LiveData<List<Promotion>>
+    fun getData(): List<Promotion>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertData(promotionList: List<Promotion>)

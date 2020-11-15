@@ -5,6 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface PromotionService {
-    @GET("?page=2")
+    @GET("?page=1")
     suspend fun getPromotionFromApi(): PromotionResponse
 }
