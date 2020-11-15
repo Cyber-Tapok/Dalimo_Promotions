@@ -13,6 +13,5 @@ data class Promotion(
     @PrimaryKey @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String?,
     @SerializedName("text") val text: String?,
-    @SerializedName("cover") val coverUrl: String?,
     @Embedded(prefix = "photo") @SerializedName("photo") val photo: Photo?
 ) : Parcelable

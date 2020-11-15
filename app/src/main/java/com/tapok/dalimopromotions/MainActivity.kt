@@ -3,8 +3,8 @@ package com.tapok.dalimopromotions
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.tapok.dalimopromotions.databinding.ActivityMainBinding
 import com.tapok.dalimopromotions.di.PromotionApplication
 import com.tapok.dalimopromotions.di.ViewModelFactory
@@ -22,23 +22,54 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
         (applicationContext as PromotionApplication).databaseComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(PromotionViewModel::class.java)
-        var fragmentManager = supportFragmentManager
-        viewModel.selected.observe(this, { promotion ->
-            promotion?.let {
-                mainBinding.detailFragment.apply {
-                    isVisible = true
-                    fragmentManager.beginTransaction()
-                        .replace(mainBinding.detailFragment.id, DetailFragment()).commit()
-                }
-            } ?: run { mainBinding.detailFragment.isVisible = false }
-        })
-        fragmentManager.beginTransaction().replace(mainBinding.masterFragment.id, MasterFragment())
-            .commit()
+        initViewModel()
+        initObservers()
+        savedInstanceState ?: viewModel.updateData()
+    }
+
+    override fun onBackPressed() {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT || viewModel.selected.value == null) {
+            super.onBackPressed()
+        }
+        viewModel.selected.value = null
     }
 
     override fun onDestroy() {
-        viewModel.selected.removeObservers(this)
+        removeObservers()
         super.onDestroy()
+    }
+
+    private fun navigateToDetailsFragment() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (navController.currentDestination?.id == R.id.masterFragment) {
+            navController.navigate(R.id.action_masterFragment_to_detailFragment)
+        }
+    }
+
+    private fun popDetailsFragment() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (navController.currentDestination?.id == R.id.detailFragment) {
+            onBackPressed()
+        }
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PromotionViewModel::class.java)
+    }
+
+    private fun initObservers() {
+        viewModel.selected.observe(this, { promotion ->
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                if (promotion != null) {
+                    navigateToDetailsFragment()
+                } else {
+                    popDetailsFragment()
+                }
+            }
+        })
+    }
+
+    private fun removeObservers() {
+        viewModel.selected.removeObservers(this)
     }
 }

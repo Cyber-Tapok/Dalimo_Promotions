@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tapok.dalimopromotions.databinding.DetailFragmentBinding
@@ -36,34 +35,37 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initToolBar()
+        initViewModel()
+        initObservers()
+    }
+
+    override fun onDestroyView() {
+        removeObservers()
+        super.onDestroyView()
+    }
+
+    private fun initToolBar() {
         detailFragmentBinding.toolbar?.setNavigationOnClickListener { requireActivity().onBackPressed() }
+    }
+
+    private fun initViewModel() {
         viewModel = ViewModelProvider(
             requireActivity().viewModelStore,
             viewModelFactory
         ).get(PromotionViewModel::class.java)
+    }
+
+    private fun initObservers() {
         viewModel.selected.observe(viewLifecycleOwner, { promotion ->
             promotion?.let {
                 detailFragmentBinding.promotion = promotion
             }
         })
-
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                viewModel.selected.value = null
-//                this.remove()
-                requireActivity().supportFragmentManager.beginTransaction().remove(this@DetailFragment).commit()
-            }
-        }
-        activity?.onBackPressedDispatcher?.addCallback(callback)
-    }
-
-    override fun onDestroyView() {
+    private fun removeObservers() {
         viewModel.selected.removeObservers(viewLifecycleOwner)
-        super.onDestroyView()
     }
 
 }

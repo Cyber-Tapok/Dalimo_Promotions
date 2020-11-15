@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 
 class PromotionViewModel(private val promotionRepository: PromotionRepository) : ViewModel() {
 
+    var selectedItemId : Int = -1
+
     val promotion = promotionRepository.getCurrentStatus()
 
     fun updateData() {

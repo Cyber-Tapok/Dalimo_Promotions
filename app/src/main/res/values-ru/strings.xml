@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Товары по акции</string>
-    <string name="label_сhoose_item">Выберите товар</string>
+    <string name="label_choose_item">Выберите товар</string>
     <string name="toast_error">Нет подключения к интернету</string>
     <string name="toast_empty">Новых акций нет</string>
 

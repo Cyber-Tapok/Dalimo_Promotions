@@ -36,7 +36,7 @@ class ItemPromotionAdapter :
         notifyDataSetChanged()
     }
 
-    fun updataData(listPromotion: List<Promotion>) {
+    fun updateData(listPromotion: List<Promotion>) {
         val diffUtilCallBack = PromotionDiffUtil(this.listPromotion, listPromotion)
         val diffResult = DiffUtil.calculateDiff(diffUtilCallBack, false)
         this.listPromotion = listPromotion
