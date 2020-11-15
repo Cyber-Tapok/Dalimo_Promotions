@@ -1,6 +1,5 @@
 package com.tapok.dalimopromotions.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.tapok.dalimopromotions.model.Promotion
 
