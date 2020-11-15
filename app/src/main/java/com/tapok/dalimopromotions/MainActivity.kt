@@ -14,6 +14,7 @@ import com.tapok.dalimopromotions.recyclerview.ItemPromotionAdapter
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: PromotionViewModel
     private lateinit var mainBinding: ActivityMainBinding
 
     @Inject
@@ -23,8 +24,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
+        (applicationContext as PromotionApplication).databaseComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PromotionViewModel::class.java)
         var fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(mainBinding.masterFragment.id, MasterFragment()).commit()
+        viewModel.selected.observe(this, {promotion ->
+            promotion?.let {
+                mainBinding.detailFragment.let {
+                    fragmentManager.beginTransaction()
+                        .replace(mainBinding.detailFragment.id, DetailFragment()).commit()
+                }
+            }
+        })
+        fragmentManager.beginTransaction().replace(mainBinding.masterFragment.id, MasterFragment())
+            .commit()
+    }
 
+    override fun onDestroy() {
+        viewModel.selected.removeObservers(this)
+        super.onDestroy()
     }
 }
