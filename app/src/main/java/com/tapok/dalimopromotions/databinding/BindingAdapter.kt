@@ -8,6 +8,6 @@ import com.squareup.picasso.Picasso
 @BindingAdapter("app:url", "app:errorImage")
 fun loadImage(view: ImageView, url: String?, errorImage: Drawable) {
     if (!url.isNullOrEmpty()) {
-        Picasso.get().load("https:$url").error(errorImage).fit().centerCrop().into(view)
+        Picasso.get().load("https://img.dalimo.ru/300$url").error(errorImage).into(view)
     }
 }

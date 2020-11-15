@@ -6,5 +6,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Photo(
-    @SerializedName("url") val url: String
+    @SerializedName("url") val url: String,
+    @SerializedName("path_url") val pathUrl: String
 ) : Parcelable

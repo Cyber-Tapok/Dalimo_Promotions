@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tapok.dalimopromotions.model.Promotion
 
-@Database(entities = [Promotion::class], version = 1, exportSchema = false)
+@Database(entities = [Promotion::class], version = 2, exportSchema = false)
 abstract class PromotionDatabase : RoomDatabase() {
     abstract fun promotionDao(): PromotionDao
 
