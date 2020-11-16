@@ -1,7 +1,5 @@
 package com.tapok.dalimopromotions.model
 
-//import com.tapok.dalimopromotions.database.PromotionDao
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tapok.dalimopromotions.DataState
