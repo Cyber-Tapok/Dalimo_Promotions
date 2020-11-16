@@ -25,10 +25,12 @@ class PromotionRepository @Inject constructor(private val promotionDao: Promotio
                     var promotionResponse = RetrofitClient.getService().getPromotionFromApi(1)
                     val listResult: MutableList<Promotion> = mutableListOf()
                     listResult.addAll(promotionResponse.data)
-                    for (page in 2..promotionResponse.meta.lastPage) {
-                        promotionResponse = RetrofitClient.getService().getPromotionFromApi(page)
-                        listResult.addAll(promotionResponse.data)
-                    }
+                    if (promotionResponse.meta.lastPage > 1)
+                        for (page in 2..promotionResponse.meta.lastPage) {
+                            promotionResponse =
+                                RetrofitClient.getService().getPromotionFromApi(page)
+                            listResult.addAll(promotionResponse.data)
+                        }
                     promotionDao.updateData(listResult)
                     state.postValue(
                         if (listResult.isEmpty()) DataState.Empty else DataState.Success(
