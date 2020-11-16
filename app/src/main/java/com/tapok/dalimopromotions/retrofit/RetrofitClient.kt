@@ -3,7 +3,7 @@ package com.tapok.dalimopromotions.retrofit
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASE_URL = "https://api.dalimo.ru/api/v1/promotions/"
+const val BASE_URL = "https://api.dalimo.ru/api/v1/"
 
 object RetrofitClient {
     private val retrofit: Retrofit = Retrofit.Builder()

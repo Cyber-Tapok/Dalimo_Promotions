@@ -1,6 +1,7 @@
 package com.tapok.dalimopromotions.model
 
 //import com.tapok.dalimopromotions.database.PromotionDao
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tapok.dalimopromotions.DataState
@@ -23,10 +24,16 @@ class PromotionRepository @Inject constructor(private val promotionDao: Promotio
             state.postValue(DataState.Idle)
             withContext(Dispatchers.IO) {
                 try {
-                    val promotionResponse = RetrofitClient.getService().getPromotionFromApi().data
-                    promotionDao.updateData(promotionResponse)
+                    var promotionResponse = RetrofitClient.getService().getPromotionFromApi(1)
+                    val listResult: MutableList<Promotion> = mutableListOf()
+                    listResult.addAll(promotionResponse.data)
+                    for (page in 2..promotionResponse.meta.lastPage) {
+                        promotionResponse = RetrofitClient.getService().getPromotionFromApi(page)
+                        listResult.addAll(promotionResponse.data)
+                    }
+                    promotionDao.updateData(listResult)
                     state.postValue(
-                        if (promotionResponse.isEmpty()) DataState.Empty else DataState.Success(
+                        if (listResult.isEmpty()) DataState.Empty else DataState.Success(
                             loadData()
                         )
                     )
